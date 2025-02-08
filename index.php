@@ -63,6 +63,26 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
         background-color: #f59e0b;
         transform: scale(1.05);
     }
+
+    .feature-box {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .feature-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-box h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #2d3748;
+    }
+
+    .feature-box p {
+        font-size: 0.9rem;
+        color: #4a5568;
+    }
     </style>
 </head>
 
@@ -117,6 +137,17 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
             </div>
             <div class="lg:w-1/2 lg:pl-8 mt-8 lg:mt-0">
                 <h1 class="text-2xl font-bold"><?php echo htmlspecialchars($product['name']); ?></h1>
+
+                <!-- Main Features Section -->
+                <div class="flex space-x-4 mt-4">
+                    <div class="feature-box p-4 bg-yellow-100 rounded-lg shadow-md text-center w-1/2">
+                        <p class="text-gray-600">Attract-people</p>
+                    </div>
+                    <div class="feature-box p-4 bg-yellow-100 rounded-lg shadow-md text-center w-1/2">
+                        <p class="text-gray-600">LuckyCharm</p>
+                    </div>
+                </div>
+
 
                 <div class="flex items-center mt-2">
                     <div class="flex items-center text-yellow-500">
