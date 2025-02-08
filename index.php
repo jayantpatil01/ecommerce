@@ -45,7 +45,6 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
         position: relative;
         margin-bottom: 20px;
         padding: 20px;
-        /* Added padding for better spacing */
     }
 
     .product-card:hover {
@@ -56,7 +55,6 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
     .product-card img {
         transition: transform 0.3s ease;
         border-radius: 10px;
-        /* Rounded corners for images */
     }
 
     .product-card:hover img {
@@ -70,7 +68,6 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
         text-align: center;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         font-weight: 500;
-        /* Bold text for features */
     }
 
     .feature-box:hover {
@@ -90,7 +87,6 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
         position: relative;
         overflow: hidden;
         margin-top: 10px;
-        /* Added margin for spacing */
     }
 
     .add-to-cart-btn:hover {
@@ -121,14 +117,12 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
         cursor: pointer;
         transition: background-color 0.3s ease;
         font-size: 1.2rem;
-        /* Increased font size for buttons */
     }
 
     .quantity-btn:hover {
         background-color: #dee2e6;
     }
 
-    /* Animation for the product cards */
     @keyframes fadeIn {
         from {
             opacity: 0;
@@ -145,21 +139,17 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
         animation: fadeIn 0.5s ease forwards;
     }
 
-    /* Additional styles for better mobile experience */
     @media (max-width: 640px) {
         .product-card {
             padding: 15px;
-            /* Adjust padding for smaller screens */
         }
 
         .add-to-cart-btn {
             font-size: 1rem;
-            /* Smaller font size for buttons on mobile */
         }
 
         .quantity-btn {
             font-size: 1rem;
-            /* Smaller font size for quantity buttons */
         }
     }
     </style>
@@ -169,12 +159,9 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
     <!-- Header -->
     <header class="bg-white shadow-sm p-4">
         <div class="container mx-auto flex justify-between items-center">
-            <!-- Logo -->
             <div class="text-2xl font-bold text-gray-800">
                 Crystal Cart
             </div>
-
-            <!-- Header Links (My Cart, My Orders, Login/Logout) -->
             <div class="flex space-x-4 items-center">
                 <a href="cart.php" class="flex items-center text-gray-800 hover:text-yellow-500">
                     <i class="fas fa-shopping-cart mr-2"></i> My Cart
@@ -182,7 +169,6 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 <a href="orders.php" class="text-gray-800 hover:text-yellow-500">
                     My Orders
                 </a>
-
                 <?php if (isset($_SESSION['user_name'])) : ?>
                 <div class="flex items-center space-x-2">
                     <i class="fas fa-user text-gray-800"></i>
@@ -226,6 +212,7 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 <div class="mt-4">
                     <span
                         class="text-2xl font-bold text-red-600">₹<?php echo number_format($product['price'], 2); ?></span>
+                    <span class="text-gray-500 line-through ml-2">₹2000.00</span> <!-- Hardcoded cut price -->
                 </div>
                 <div class="mt-4">
                     <h2 class="text-lg font-semibold">Product Description</h2>
@@ -235,22 +222,23 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
                     <h2 class="text-lg font-semibold">Benefits</h2>
                     <ul class="list-disc list-inside">
                         <?php 
-                                    $benefits = explode("\n", $product['benfits']);
-                                    foreach ($benefits as $benefit) {
-                                        echo "<li>" . htmlspecialchars($benefit) . "</li>";
-                                    }
-                                ?>
+                            $benefits = explode("\n", $product['benfits']);
+                            foreach ($benefits as $benefit) {
+                                echo "<li>" . htmlspecialchars($benefit) . "</li>";
+                            }
+                        ?>
                     </ul>
                 </div>
                 <div class="mt-4">
-                    <h2 class="text-lg font-semibold">Quantity</h2>
                     <div class="flex items-center mt-2">
-                        <button class="quantity-btn">-</button>
-                        <input class="w-12 text-center border border-gray-300 rounded" type="text" value="1" />
-                        <button class="quantity-btn">+</button>
+
                     </div>
                 </div>
-                <button class="add-to-cart-btn w-full">ADD TO CART</button>
+                <button onclick="window.location.href='./cart.php?id=<?php echo $product['id']; ?>'"
+                    class="add-to-cart-btn w-full">
+                    ADD TO CART
+                </button>
+
             </div>
             <?php endforeach; ?>
         </div>
