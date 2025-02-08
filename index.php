@@ -22,71 +22,150 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
     <style>
     body {
         font-family: 'Poppins', sans-serif;
+        background-color: #f0f4f8;
+        color: #343a40;
+        margin: 0;
+        padding: 0;
+    }
+
+    header {
+        background-color: #ffffff;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
     }
 
     .product-card {
+        background-color: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        overflow: hidden;
+        position: relative;
+        margin-bottom: 20px;
+        padding: 20px;
+        /* Added padding for better spacing */
     }
 
     .product-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
     }
 
-    .footer {
-        background: linear-gradient(135deg, #2c3e50, #34495e);
-        color: white;
+    .product-card img {
+        transition: transform 0.3s ease;
+        border-radius: 10px;
+        /* Rounded corners for images */
     }
 
-    .footer a {
-        color: #bdc3c7;
-        transition: color 0.3s ease;
-    }
-
-    .footer a:hover {
-        color: #ecf0f1;
-    }
-
-    .quantity-btn {
-        transition: background-color 0.3s ease;
-    }
-
-    .quantity-btn:hover {
-        background-color: #e2e8f0;
-    }
-
-    .add-to-cart-btn {
-        transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-
-    .add-to-cart-btn:hover {
-        background-color: #f59e0b;
+    .product-card:hover img {
         transform: scale(1.05);
     }
 
     .feature-box {
+        background-color: #ffeeba;
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        font-weight: 500;
+        /* Bold text for features */
     }
 
     .feature-box:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
 
-    .feature-box h3 {
+    .add-to-cart-btn {
+        background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        border: none;
+        border-radius: 8px;
+        padding: 12px;
         font-size: 1.1rem;
-        font-weight: 600;
-        color: #2d3748;
+        color: white;
+        transition: background 0.3s ease, transform 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        margin-top: 10px;
+        /* Added margin for spacing */
     }
 
-    .feature-box p {
-        font-size: 0.9rem;
-        color: #4a5568;
+    .add-to-cart-btn:hover {
+        background: linear-gradient(90deg, #fbbf24, #f59e0b);
+        transform: scale(1.05);
+    }
+
+    .footer {
+        background: #343a40;
+        color: #ffffff;
+        padding: 40px 0;
+    }
+
+    .footer a {
+        color: #adb5bd;
+        transition: color 0.3s ease;
+    }
+
+    .footer a:hover {
+        color: #ffffff;
+    }
+
+    .quantity-btn {
+        background-color: #e9ecef;
+        border: none;
+        border-radius: 5px;
+        padding: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-size: 1.2rem;
+        /* Increased font size for buttons */
+    }
+
+    .quantity-btn:hover {
+        background-color: #dee2e6;
+    }
+
+    /* Animation for the product cards */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .product-card {
+        animation: fadeIn 0.5s ease forwards;
+    }
+
+    /* Additional styles for better mobile experience */
+    @media (max-width: 640px) {
+        .product-card {
+            padding: 15px;
+            /* Adjust padding for smaller screens */
+        }
+
+        .add-to-cart-btn {
+            font-size: 1rem;
+            /* Smaller font size for buttons on mobile */
+        }
+
+        .quantity-btn {
+            font-size: 1rem;
+            /* Smaller font size for quantity buttons */
+        }
     }
     </style>
 </head>
 
-<body class="bg-gray-100 text-gray-800">
+<body>
     <!-- Header -->
     <header class="bg-white shadow-sm p-4">
         <div class="container mx-auto flex justify-between items-center">
@@ -124,31 +203,16 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
     <main class="container mx-auto px-4 py-8">
         <?php if (!empty($products)) : ?>
-        <?php foreach ($products as $product) : ?>
-        <div class="flex flex-col lg:flex-row mt-8 border-b pb-8 product-card">
-            <div class="lg:w-1/2">
-                <img alt="<?php echo htmlspecialchars($product['name']); ?>" class="w-full rounded-lg shadow-lg"
-                    height="800" src="<?php echo htmlspecialchars($product['image']); ?>" width="600" />
-                <div class="flex space-x-2 mt-4">
-                    <img alt="<?php echo htmlspecialchars($product['name']); ?> Thumbnail"
-                        class="w-20 h-20 rounded-lg shadow-lg" height="100"
-                        src="<?php echo htmlspecialchars($product['Thumbnail']); ?>" width="100" />
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <?php foreach ($products as $product) : ?>
+            <div class="product-card">
+                <img alt="<?php echo htmlspecialchars($product['name']); ?>" class="w-full h-48 object-cover rounded-lg"
+                    src="<?php echo htmlspecialchars($product['image']); ?>" />
+                <h1 class="text-xl font-bold mt-4"><?php echo htmlspecialchars($product['name']); ?></h1>
+                <div class="flex space-x-2 mt-2">
+                    <div class="feature-box">Attract-people</div>
+                    <div class="feature-box">LuckyCharm</div>
                 </div>
-            </div>
-            <div class="lg:w-1/2 lg:pl-8 mt-8 lg:mt-0">
-                <h1 class="text-2xl font-bold"><?php echo htmlspecialchars($product['name']); ?></h1>
-
-                <!-- Main Features Section -->
-                <div class="flex space-x-4 mt-4">
-                    <div class="feature-box p-4 bg-yellow-100 rounded-lg shadow-md text-center w-1/2">
-                        <p class="text-gray-600">Attract-people</p>
-                    </div>
-                    <div class="feature-box p-4 bg-yellow-100 rounded-lg shadow-md text-center w-1/2">
-                        <p class="text-gray-600">LuckyCharm</p>
-                    </div>
-                </div>
-
-
                 <div class="flex items-center mt-2">
                     <div class="flex items-center text-yellow-500">
                         <i class="fas fa-star"></i>
@@ -159,55 +223,37 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
                     </div>
                     <span class="ml-2 text-gray-600"><?php echo htmlspecialchars($product['review']); ?> reviews</span>
                 </div>
-
                 <div class="mt-4">
                     <span
-                        class="text-3xl font-bold text-red-600">₹<?php echo number_format($product['price'], 2); ?></span>
+                        class="text-2xl font-bold text-red-600">₹<?php echo number_format($product['price'], 2); ?></span>
                 </div>
-
-                <!-- Dynamic Description Section -->
-                <div class="mt-6 text-gray-700">
-                    <h2 class="text-xl font-semibold">Product Description</h2>
-                    <p class="mt-2">
-                        <?php echo htmlspecialchars($product['description']); ?>
-                    </p>
+                <div class="mt-4">
+                    <h2 class="text-lg font-semibold">Product Description</h2>
+                    <p><?php echo htmlspecialchars($product['description']); ?></p>
                 </div>
-
-                <!-- Dynamic Benefits Section -->
-                <div class="mt-6 text-gray-700">
-                    <h2 class="text-xl font-semibold">Benefits</h2>
-                    <ul class="list-disc list-inside mt-2">
+                <div class="mt-4">
+                    <h2 class="text-lg font-semibold">Benefits</h2>
+                    <ul class="list-disc list-inside">
                         <?php 
-                            $benefits = explode("\n", $product['benfits']);
-                            foreach ($benefits as $benefit) {
-                                echo "<li>" . htmlspecialchars($benefit) . "</li>";
-                            }
-                        ?>
+                                    $benefits = explode("\n", $product['benfits']);
+                                    foreach ($benefits as $benefit) {
+                                        echo "<li>" . htmlspecialchars($benefit) . "</li>";
+                                    }
+                                ?>
                     </ul>
                 </div>
-
                 <div class="mt-4">
                     <h2 class="text-lg font-semibold">Quantity</h2>
                     <div class="flex items-center mt-2">
-                        <button class="quantity-btn bg-gray-200 text-gray-600 px-3 py-1 rounded-l-lg">-</button>
-                        <input class="w-12 text-center border-t border-b border-gray-200" type="text" value="1" />
-                        <button class="quantity-btn bg-gray-200 text-gray-600 px-3 py-1 rounded-r-lg">+</button>
+                        <button class="quantity-btn">-</button>
+                        <input class="w-12 text-center border border-gray-300 rounded" type="text" value="1" />
+                        <button class="quantity-btn">+</button>
                     </div>
                 </div>
-
-                <div class="mt-4 text-gray-600">
-                    693 orders placed in the last 24 hours
-                </div>
-
-                <button
-                    class="add-to-cart-btn mt-6 w-full bg-yellow-500 text-white text-lg font-semibold py-3 rounded-lg shadow-lg"
-                    id="add-to-cart-button" onclick="window.location.href='cart.php?id=<?php echo $product['id']; ?>'">
-                    ADD TO CART
-                </button>
-
+                <button class="add-to-cart-btn w-full">ADD TO CART</button>
             </div>
+            <?php endforeach; ?>
         </div>
-        <?php endforeach; ?>
         <?php else : ?>
         <p class="text-center text-gray-600">No products found.</p>
         <?php endif; ?>
