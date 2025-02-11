@@ -62,12 +62,13 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 
     .feature-box {
-        background-color: #ffeeba;
+        background: linear-gradient(90deg, #6a11cb, #2575fc);
         border-radius: 8px;
         padding: 10px;
         text-align: center;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         font-weight: 500;
+        color: white;
     }
 
     .feature-box:hover {
