@@ -78,6 +78,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['order_id']) && isset($
         -webkit-text-fill-color: transparent;
     }
 
+    /* Navigation Bar */
+    nav {
+        background-color: #3498db;
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+    }
+
+    nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    nav ul li {
+        margin: 5px;
+    }
+
+    nav ul li a {
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        padding: 8px 12px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+        background-color: #2980b9;
+    }
+
     /* Form Styles */
     form {
         background-color: #fff;
