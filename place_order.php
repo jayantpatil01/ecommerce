@@ -12,10 +12,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['razorpay_payment_id'])
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
     $total_amount = $_POST['total_amount'];
     $payment_id = $_POST['razorpay_payment_id'];
+    $order_date = date('Y-m-d'); // Gets the current date in YYYY-MM-DD format
+    $sql = "INSERT INTO orders (product_id, fullname, address, city, state, zip_code, phone, total_amount, status, order_date ,payment_id, payment_status) 
+        VALUES ('$product_id', '$full_name', '$address', '$city', '$state', '$zip_code', '$phone', '$total_amount', 'Confirmed', '$order_date', '$payment_id', 'Paid')";
 
-    // Insert order into database with payment verified
-    $sql = "INSERT INTO orders (product_id, fullname, address, city, state, zip_code, phone, total_amount, status, payment_id, payment_status) 
-            VALUES ('$product_id', '$full_name', '$address', '$city', '$state', '$zip_code', '$phone', '$total_amount', 'Confirmed', '$payment_id', 'Paid')";
 
     if (mysqli_query($conn, $sql)) {
         $_SESSION['full_name'] = $full_name;
