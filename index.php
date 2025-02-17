@@ -215,7 +215,11 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
                         class="text-2xl font-bold text-red-600">₹<?php echo number_format($product['price'], 2); ?></span>
                     <span class="text-gray-500 line-through ml-2">₹2000.00</span> <!-- Hardcoded cut price -->
                 </div>
-                <div class="countdown mt-4 text-lg font-semibold text-yellow-600"></div> <!-- Change to class -->
+                <div class="flex items-center space-x-2 text-yellow-600">
+                    <p>Sale end's in:</p>
+                    <div class="countdown text-lg font-semibold text-yellow-600"></div>
+                </div>
+                <!-- Change to class -->
 
                 <div class="mt-4">
                     <h2 class="text-lg font-semibold">Product Description</h2>
