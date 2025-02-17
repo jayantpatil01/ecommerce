@@ -153,6 +153,86 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
             font-size: 1rem;
         }
     }
+
+    /* Additional Enhancements */
+    .product-card {
+        background: linear-gradient(145deg, #ffffff, #f8f9fa);
+        border: 1px solid #e9ecef;
+    }
+
+    .product-card h1 {
+        color: #2d3748;
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .product-card p {
+        color: #4a5568;
+        line-height: 1.6;
+    }
+
+    .product-card .price {
+        font-size: 1.75rem;
+        font-weight: bold;
+        color: #e53e3e;
+    }
+
+    .product-card .discount {
+        color: #718096;
+        font-size: 1rem;
+        text-decoration: line-through;
+    }
+
+    .product-card .benefits ul {
+        padding-left: 1.5rem;
+    }
+
+    .product-card .benefits li {
+        margin-bottom: 0.5rem;
+    }
+
+    .product-card .countdown {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #d69e2e;
+    }
+
+    .footer {
+        background: linear-gradient(145deg, #2d3748, #1a202c);
+    }
+
+    .footer h3 {
+        color: #ffffff;
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .footer p {
+        color: #cbd5e0;
+    }
+
+    .footer a {
+        color: #cbd5e0;
+        transition: color 0.3s ease;
+    }
+
+    .footer a:hover {
+        color: #ffffff;
+    }
+
+    .footer .social-icons a {
+        font-size: 1.5rem;
+        margin-right: 1rem;
+    }
+
+    .footer .social-icons a:hover {
+        color: #ffffff;
+    }
+
+    .footer .copyright {
+        color: #a0aec0;
+        font-size: 0.875rem;
+    }
     </style>
 </head>
 
@@ -164,16 +244,21 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 Mysticgem
             </div>
             <div class="flex space-x-4 items-center">
+                <!-- My Cart Link -->
                 <a href="cart.php" class="flex items-center text-gray-800 hover:text-yellow-500">
-                    <i class="fas fa-shopping-cart mr-2"></i> My Cart
+                    <i class="fas fa-shopping-cart mr-2"></i>
+                    <span class="hidden sm:inline">My Cart</span> <!-- Hide text on small screens -->
                 </a>
+
                 <a href="orders.php" class="text-gray-800 hover:text-yellow-500">
                     My Orders
                 </a>
+
                 <?php if (isset($_SESSION['user_name'])) : ?>
                 <div class="flex items-center space-x-2">
                     <i class="fas fa-user text-gray-800"></i>
-                    <span class="text-gray-800 font-semibold"><?php echo $_SESSION['user_name']; ?></span>
+                    <span
+                        class="hidden sm:inline text-gray-800 font-semibold"><?php echo $_SESSION['user_name']; ?></span>
                     <a href="logout.php" class="bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600">
                         Logout
                     </a>
@@ -181,7 +266,8 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 <?php else : ?>
                 <a href="login.php"
                     class="flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600">
-                    <i class="fas fa-user mr-2"></i> Login
+                    <i class="fas fa-user mr-2"></i>
+                    <span class="hidden sm:inline">Login</span> <!-- Hide text on small screens -->
                 </a>
                 <?php endif; ?>
             </div>
@@ -219,7 +305,6 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
                     <p>Sale end's in:</p>
                     <div class="countdown text-lg font-semibold text-yellow-600"></div>
                 </div>
-                <!-- Change to class -->
 
                 <div class="mt-4">
                     <h2 class="text-lg font-semibold">Product Description</h2>
@@ -235,11 +320,6 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
                             }
                         ?>
                     </ul>
-                </div>
-                <div class="mt-4">
-                    <div class="flex items-center mt-2">
-
-                    </div>
                 </div>
                 <button onclick="window.location.href='./cart.php?id=<?php echo $product['id']; ?>'"
                     class="add-to-cart-btn w-full">
@@ -282,44 +362,48 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 </div>
             </div>
             <div class="text-center mt-8 text-gray-400">
-                &copy; 2023 Mysticgem. All rights reserved.
+                <p>&copy; <span id="currentYear"></span> Mysticgem. All rights reserved.</p>
             </div>
         </div>
     </footer>
     <script>
+    // Year in footer
+    document.addEventListener('DOMContentLoaded', () => {
+        const currentYear = new Date().getFullYear();
+        document.getElementById('currentYear').textContent = currentYear;
+    });
+    // Countdown 
     document.querySelectorAll('.countdown').forEach((countdownElement) => {
-        // Try to get the saved end time from localStorage
         let countdownEndTime = localStorage.getItem('countdownEndTime');
-
-        // If there's no stored countdown end time, set it to 24 hours from now
         if (!countdownEndTime) {
             countdownEndTime = new Date().getTime() + (24 * 60 * 60 * 1000);
-            // Store the new end time in localStorage
             localStorage.setItem('countdownEndTime', countdownEndTime);
         }
 
-        // Update the countdown every second
         let x = setInterval(function() {
             let now = new Date().getTime();
             let distance = countdownEndTime - now;
 
             if (distance < 0) {
-                // If the countdown has expired, reset the countdown to a new 24-hour period
                 countdownEndTime = new Date().getTime() + (24 * 60 * 60 * 1000);
-                localStorage.setItem('countdownEndTime', countdownEndTime); // Store the new end time
-                distance = countdownEndTime - now; // Recalculate the distance
+                localStorage.setItem('countdownEndTime', countdownEndTime);
+                distance = countdownEndTime - now;
             }
 
-            // Calculate hours, minutes, and seconds remaining
+            let days = Math.floor(distance / (1000 * 60 * 60 * 24));
             let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            countdownElement.innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
+            countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+            if (distance < 0) {
+                clearInterval(x);
+                countdownElement.innerHTML = "EXPIRED";
+            }
         }, 1000);
     });
     </script>
-
 </body>
 
 </html>
