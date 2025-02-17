@@ -2,7 +2,7 @@
 session_start(); // Start session to manage login state
 require_once 'db.php';
 
-// Fetch products from the database including description and benefits
+// Fetch products from the database
 $sql = "SELECT * FROM products";
 $result = mysqli_query($conn, $sql);
 $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -14,7 +14,7 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Crystal Cart - Product Page</title>
+    <title>Mysticgem - Product Page</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
@@ -161,7 +161,7 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
     <header class="bg-white shadow-sm p-4">
         <div class="container mx-auto flex justify-between items-center">
             <div class="text-2xl font-bold text-gray-800">
-                Crystal Cart
+                Mysticgem
             </div>
             <div class="flex space-x-4 items-center">
                 <a href="cart.php" class="flex items-center text-gray-800 hover:text-yellow-500">
@@ -215,6 +215,8 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
                         class="text-2xl font-bold text-red-600">₹<?php echo number_format($product['price'], 2); ?></span>
                     <span class="text-gray-500 line-through ml-2">₹2000.00</span> <!-- Hardcoded cut price -->
                 </div>
+                <div class="countdown mt-4 text-lg font-semibold text-yellow-600"></div> <!-- Change to class -->
+
                 <div class="mt-4">
                     <h2 class="text-lg font-semibold">Product Description</h2>
                     <p><?php echo htmlspecialchars($product['description']); ?></p>
@@ -253,7 +255,7 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
-                    <h3 class="text-xl font-bold mb-4">Crystal Cart</h3>
+                    <h3 class="text-xl font-bold mb-4">Mysticgem</h3>
                     <p class="text-gray-400">Your one-stop shop for the finest crystals and gemstones.</p>
                 </div>
                 <div>
@@ -276,10 +278,44 @@ $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 </div>
             </div>
             <div class="text-center mt-8 text-gray-400">
-                &copy; 2023 Crystal Cart. All rights reserved.
+                &copy; 2023 Mysticgem. All rights reserved.
             </div>
         </div>
     </footer>
+    <script>
+    document.querySelectorAll('.countdown').forEach((countdownElement) => {
+        // Try to get the saved end time from localStorage
+        let countdownEndTime = localStorage.getItem('countdownEndTime');
+
+        // If there's no stored countdown end time, set it to 24 hours from now
+        if (!countdownEndTime) {
+            countdownEndTime = new Date().getTime() + (24 * 60 * 60 * 1000);
+            // Store the new end time in localStorage
+            localStorage.setItem('countdownEndTime', countdownEndTime);
+        }
+
+        // Update the countdown every second
+        let x = setInterval(function() {
+            let now = new Date().getTime();
+            let distance = countdownEndTime - now;
+
+            if (distance < 0) {
+                // If the countdown has expired, reset the countdown to a new 24-hour period
+                countdownEndTime = new Date().getTime() + (24 * 60 * 60 * 1000);
+                localStorage.setItem('countdownEndTime', countdownEndTime); // Store the new end time
+                distance = countdownEndTime - now; // Recalculate the distance
+            }
+
+            // Calculate hours, minutes, and seconds remaining
+            let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            countdownElement.innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
+        }, 1000);
+    });
+    </script>
+
 </body>
 
 </html>
